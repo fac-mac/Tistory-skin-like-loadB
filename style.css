@@ -1,0 +1,486 @@
+@charset "utf-8";
+
+/*  색상 변수들
+    원하는 영역의 색을 한 번에 변환 가능합니다. */
+
+:root {
+  --lightest: #e9f3f9;
+  --middle: #faebef;
+  --darkest: #d2cbe4;
+  --highlight: #fee5e8;
+  --text: #576c8a;
+  --white: #ffffff;
+
+  --background: linear-gradient(var(--middle), var(--lightest));
+  --moreLess: var(--darkest);
+  --menu-background: var(--darkest);
+  --name: var(--highlight);
+  --reply-control: var(--lightest);
+  --inner-textarea: var(--darkest);
+  --paging: var(--text);
+  --white-background: rgba(255, 255, 255, 0.8);
+  --textarea: var(--white-background);
+}
+
+
+/* 기본 속성 */
+
+a,
+a:link,
+a:visited,
+a:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+
+html {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  width: 100%;
+  height: 100%;
+}
+
+#alignCenter {
+  margin: 0 auto;
+  width: 1000px;
+  height: 100%;
+}
+
+body {
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  color: var(--text);
+  background: var(--background);
+  line-height: 1.5em;
+  width: 100%;
+  height: 100%;
+  font-size: 8pt;
+  background-attachment: fixed;
+}
+
+.container_postbtn,
+a[href^="/toolbar/popup/abuseReport/"] {
+  display: none;
+}
+
+#footer,
+#footer a {
+  width: 100%;
+  color: var(--darkest);
+  text-align: center;
+}
+
+#emoticonList {
+	display: none;
+}
+
+
+/* 메뉴 */
+
+header {
+  display: block;
+  float: left;
+  text-align: center;
+  padding: 50px 0 0 0;
+  width: 150px;
+}
+
+header ul,
+header li {
+  margin: 0;
+  list-style: none;
+  padding: 20px 0 20px 0;
+}
+
+.menuItems {
+  display: block;
+  margin: 0 auto;
+  width: 50px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: var(--white-background);
+}
+
+.menuItems:hover {
+  background-color: var(--highlight);
+  overflow: hidden;
+}
+
+/* 게시판 내부 메뉴 */
+
+#boardMenu {
+	display: none;
+	margin: 0 0 -30px 0;
+}
+
+.boardButton {
+	display: inline-block;
+	cursor: pointer;
+	padding-left: 5px;
+	padding-right: 5px;
+  height: 20px;
+  border-radius: 5px;
+  background: var(--white-background);
+  text-align: center;
+}
+
+.boardButton:hover {
+	background: var(--highlight);
+}
+
+/* 본문 */
+
+#container {
+  display: block;
+  float: left;
+  width: 750px;
+  margin-top: 50px;
+  padding: 10px 30px 10px 30px;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+}
+
+.info,
+.info a {
+  font-weight: normal;
+  color: var(--darkest);
+  margin: 40px 0 3px 0;
+}
+
+.article {
+  margin: 0 0 10px 0;
+  padding: 20px;
+	border-radius: 10px;
+  background-color: var(--white-background);
+}
+
+.article .imageblock {
+  max-width: 100%;
+  margin: 0 auto !important;
+}
+
+.another_category {
+	display: none;
+}
+
+
+/* 댓글 및 방명록 */
+
+.name,
+.name a {
+  font-weight: bold;
+  color: var(--text);
+}
+
+.date {
+  color: var(--reply-control);
+  text-align: right;
+  float: right;
+  margin-right: 15px;
+}
+
+.control,
+.control a {
+  color: var(--reply-control);
+}
+
+.rp_admin,
+.rp_general,
+.rp_secret,
+.guest_admin,
+.guest_general,
+.guest_secret {
+  background-color: var(--white-background);
+  border-radius: 0px 10px 10px 20px;
+  padding: 10px 15px 5px 20px;
+	margin: 5px 0 10px 0;
+}
+
+.guestList > ul {
+  padding: 0 10px 0 10px;
+}
+
+.guestList ul ul {
+  padding: 0 0 0 20px;
+}
+
+/* 댓글 메모, 비밀댓글 스타일 */
+
+.memo {
+	color: var(--moreLess);
+}
+
+.rpSecretBox {
+  background-color: var(--moreLess);
+  color: var(--white);
+  padding: 0px 3px 1px 3px;
+  margin: 2px 0 0 0;
+}
+
+/* 댓글 접기 버튼 */
+
+.commentMoreLess {
+  all: unset;
+  cursor: pointer;
+  background-color: var(--moreLess);
+  color: var(--white);
+  padding: 0px 3px 1px 3px;
+  margin: 2px 0 0 0;
+}
+
+
+/* 댓글 및 방명록 입력 폼 */
+
+.post > form {
+  margin: 0 0 40px 0;
+}
+
+textarea {
+  all: unset;
+  border-radius: 5px;
+  margin: 5px 0 0 0;
+  background: var(--textarea);
+  color: var(--inner-textarea);
+  padding: 10px 20px 10px 20px;
+  font-size: 8pt;
+  width: 710px;
+  float: center;
+}
+
+input {
+  font-size: 8pt;
+  border-radius: 5px;
+  border: 0px;
+  outline: none;
+  background: var(--textarea);
+  color: var(--inner-textarea);
+  padding: 5px;
+  font-family: "굴림";
+  font-size: 8pt;
+  vertical-align: middle;
+}
+
+.commentButton,
+input[type="submit"],
+input[type="button"] {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  background: var(--highlight);
+  color: #fff;
+  text-align: center;
+}
+
+.commentButton {
+  float: right;
+  padding: 3px 5px 3px 5px;
+}
+
+.commentWrite {
+  margin: 0;
+}
+
+.guestWrite {
+  margin: 50px 0 20px 0;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 10%;
+  padding: 5px;
+}
+
+input[type="checkbox"] {
+  vertical-align: middle;
+  margin: 0 0 0 0;
+  color: var(--darkest);
+}
+
+input[type="checkbox"] + label {
+  vertical-align: middle;
+  color: var(--darkest);
+}
+
+
+/* 태그 */
+
+.taglog {
+	width: 650px;
+	height: 400px;
+	padding: 50px;
+	margin: 0 auto;
+	margin-top: 50px;
+	border-radius: 10px;
+  line-height: 2.5em;
+  text-align: center;
+  display: inline-block;
+  list-style: none;
+  word-break: keep-all;
+  background-color: var(--white-background);
+}
+
+.taglog > a {
+  background-color: var(--highlight);
+	padding: 3px 5px 3px 5px;
+	border-radius: 10px;
+	margin: 5px;
+}
+
+.taglog > a:hover {
+	background-color: var(--white-background);
+}
+
+
+/* 페이징 */
+
+.paging {
+  margin: 20px 0 20px 0;
+  word-spacing: 0.5em;
+  text-align: left;
+}
+
+.paging a {
+  color: var(--paging);
+}
+
+.paging span.selected {
+	color: var(--darkest);
+}
+
+
+/* 스크롤바 */
+
+body::-webkit-scrollbar {
+  width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--highlight);
+  border-radius: 100px;
+}
+
+body::-webkit-scrollbar-track {
+  height: 80%;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+
+/* 글 접기 버튼 */
+
+div[data-ke-type="moreLess"] {
+  width: 100%;
+  float: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+div[data-ke-type="moreLess"] .btn-toggle-moreless {
+  border-radius: 10px;
+  background-color: var(--moreLess);
+  cursor: pointer;
+  text-align: center;
+  font-family: "굴림" !important;
+  font-size: 8pt !important;
+  padding: 5px 20px 5px 20px;
+  color: var(--white) !important;
+}
+
+
+
+
+/* 모바일 환경 설정 */
+
+@media screen and (max-width: 1000px) {
+  body {
+    overflow-y: auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  body,
+  #alignCenter,
+  #content {
+    width: 100% !important;
+    height: 100%;
+  }
+
+  #container,
+  #footer {
+    display: block;
+    float: none;
+    width: 90% !important;
+    padding: 0px;
+    margin: 0 auto;
+  }
+
+  #footer {
+    height: 30px;
+  }
+
+  header {
+    display: block;
+    float: none;
+    padding: 0px;
+    margin: 0 auto;
+    height: 20px;
+    width: 300px;
+    margin-top: 40px;
+    margin-bottom: -20px;
+    border-radius: 10px;
+    background-color: var(--white-background);
+  }
+
+  header ul,
+  header li {
+    display: inline;
+  }
+	
+  .menuItems {
+    display: inline-block;
+    float: left;
+    width: 50px;
+    border-radius: 0;
+    background-color: transparent;
+  }
+	
+  .menuItems:hover {
+    overflow: hidden;
+  }
+
+	#boardMenu {
+		margin-top: 10px;
+	}
+
+	.taglog,
+	textarea {
+		display: block;
+		margin: 0 auto;
+		width: 70%;
+	}
+	
+	.taglog {
+		margin-top: 40px;
+	}
+	
+  textarea {
+    width: 90%;
+    padding: 20px;
+		margin-top: 5px;
+  }
+	
+  body::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: var(--highlight);
+    border-radius: 100px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background-color: var(--lightest);
+  }
+}
