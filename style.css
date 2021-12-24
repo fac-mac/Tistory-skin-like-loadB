@@ -63,9 +63,11 @@ body {
 }
 
 .container_postbtn,
-a[href^="/toolbar/popup/abuseReport/"] {
+a[href^="/toolbar/popup/abuseReport/"],
+.another_category {
   /* 저작권 및 공감, 공유, 통계 버튼 */
   /* 댓글 신고 버튼 */
+  /* 글 하단 같은 카테고리 글 목록 */
   display: none;
 }
 
