@@ -327,6 +327,7 @@ textarea {
   text-align: justify;
   min-height: 40vh;
   padding: 10vh 10vw;
+  width: calc(var(--width) - 20vw);
 }
 
 .taglog__items {
@@ -432,5 +433,6 @@ body::-webkit-scrollbar-track {
 
   #taglog {
     padding: 10vh 10%;
+    width: 80%;
   }
 }
