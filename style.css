@@ -331,7 +331,7 @@ textarea {
 }
 
 .taglog__items {
-  all: unset;
+  display: inline-block;
   cursor: pointer;
   padding: 0.3rem 0.5rem;
   background-color: var(--highlight);
