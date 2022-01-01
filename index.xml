@@ -19,7 +19,7 @@
     <recentEntries>5</recentEntries>
     <recentComments>5</recentComments>
     <recentTrackbacks>5</recentTrackbacks>
-    <itemsOnGuestbook>10</itemsOnGuestbook>
+    <itemsOnGuestbook>5</itemsOnGuestbook>
     <tagsInCloud>30</tagsInCloud>
     <sortInCloud>3</sortInCloud>
     <expandComment>0</expandComment>
@@ -49,4 +49,29 @@
     </tree>
     <contentWidth>500</contentWidth>
   </default>
+  <variables>
+    <variablegroup name="기타 설정">
+      <variable>
+        <name>loading</name>
+        <label><![CDATA[ 로딩 화면 표시 여부 ]]></label>
+        <type>BOOL</type>
+        <option />
+        <default>false</default>
+        <description>
+        <![CDATA[ 스크립트 변환이 끝나기 전까지 로딩 화면을 보여줍니다. ]]>
+      </description>
+      </variable>
+      <variable>
+        <name>articleEmoticon</name>
+        <label><![CDATA[ 이모티콘 변환 확장 ]]></label>
+        <type>BOOL</type>
+        <option />
+        <default>false</default>
+        <description>
+        <![CDATA[ 글 본문에서도 이모티콘 변환 기능을 사용합니다. ]]>
+        <![CDATA[ 주의! 본문에 일치하는 이모티콘이 있는지 일일이 확인하기 때문에 성능이 대폭 떨어집니다. ]]>
+      </description>
+      </variable>
+    </variablegroup>
+  </variables>
 </skin>
