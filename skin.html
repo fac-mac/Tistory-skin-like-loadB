@@ -7,259 +7,71 @@
 	<link rel="shortcut icon" href="[##_blog_link_##]favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="./style.css" />
 	<title>[##_title_##]</title>
-	<script defer language='JavaScript' type='text/javascript'>
-		
-		function layer_toggle(obj) {
-			if (obj.style.display == 'none') obj.style.display = 'block';
-			else if (obj.style.display == 'block') obj.style.display = 'none';
-		}
-		
-		function makeArticleMoreLess() {
-    const list = document.querySelectorAll(`div[data-ke-type='moreLess']`);
-    list.forEach(function(element) {
-			const btn = element.querySelector('a.btn-toggle-moreless');
-      const line = element.querySelector('div.moreless-content p');
-      if (line.innerText.substr(0, 4) === '#접기 ') {
-          const title = line.innerText.substr(4);
-          element.setAttribute("data-text-more", title);
-          btn.innerText = title;
-          line.remove();
-      }
-		});
-		} /* 참고한 코드: https://pang2h.tistory.com/254 */
-		
-		function changeCommentLine(line, item) {
-			const title = line.substr(4);
-			const btn = document.createElement('button');
-			const br = document.createElement('span');
-			br.innerHTML = '<br>';
-			btn.classList.add('commentMoreLess');
-     	btn.innerText = '▼ ' + title;
-			btn.setAttribute("onclick", "layer_toggle(this.parentNode.querySelector('.repContent'));");
-			item.insertBefore(btn, item.querySelector('.repContent'));
-			item.insertBefore(br, btn);
-			if (item.innerHTML.indexOf(line + '<br>') == -1)
-				item.innerHTML = item.innerHTML.replace(line, "");
-			else
-				item.innerHTML = item.innerHTML.replace(line + '<br>', "");
-			item.querySelector('.repContent').style = "display: none;";
-		}
-		
-		function makeCommentMoreLess(list)	{
-			list.forEach(function(element) {
-				const split = element.querySelector('.repContent').innerText.split('\n');
-        if (split[0] != null && split[0].substr(0, 4) === '#접기 ')
-					changeCommentLine(split[0], element);
-				else if (split[1] != null && split[1].substr(0, 4) === '#접기 ')
-					changeCommentLine(split[1], element);
-			});
-		}
-
-		function changeMemoLine(line, item) {
-			const title = line.substr(4);
-			const memo = document.createElement('span');
-			const br = document.createElement('span');
-			br.innerHTML = '<br>';
-			memo.classList.add('memo');
-     	memo.innerText = 'memo. ' + title;
-			item.insertBefore(memo, item.querySelector('.control').nextSibling);
-			item.insertBefore(br, memo);
-			if (item.innerHTML.indexOf(line + '<br>') == -1)
-				item.innerHTML = item.innerHTML.replace(line, "");
-			else
-				item.innerHTML = item.innerHTML.replace(line + '<br>', "");
-		}
-		
-		function makeMemo(list)	{
-			list.forEach(function(element) {
-				const split = element.querySelector('.repContent').innerText.split('\n');
-        if (split[0] != null && split[0].substr(0, 4) === '#메모 ')
-					changeMemoLine(split[0], element);
-				else if (split[1] != null && split[1].substr(0, 4) === '#메모 ')
-					changeMemoLine(split[1], element);
-			});
-		}
-		
-		function showBoardMenu() {
-			document.querySelector('#boardMenu').style.display = 'block';
-		}
-		
-		function parseEmoticons() {
-			return new Promise(function(resolve, reject) {
-				const emoticons = [];
-				const req = new XMLHttpRequest();
-				req.onreadystatechange = function() {
-				if (this.status == 200 && this.readyState == this.DONE) {
-					const parser = new DOMParser();
-					const doc = parser.parseFromString(this.response, 'text/html');
-					const table = doc.querySelectorAll('td');
-					table.forEach(function(element) {
-						const img = element.querySelector('img');
-						const cmd = element.innerText.trim();
-						if (img != null && cmd != null)
-							emoticons.push({cmd: cmd, src: img.src});
-					});
-					resolve(emoticons);
-				}
-			};
-			req.open("GET", `[##_blog_link_##]pages/emoticon`, true);
-			req.send();
-			});
-		}
-		
-		function changeEmoticon(rpList, emoticons)
-		{
-				emoticons.forEach(function(obj) {
-				rpList.forEach(function(rp) {
-					const content = rp.querySelector('.repContent').innerHTML;
-					if (content.indexOf(obj.cmd) != -1)
-						rp.querySelector('.repContent').innerHTML
-							= content.replace(RegExp(obj.cmd, 'gm'),`<img src="` + obj.src + `">`);
-				});
-			});
-		}
-		
-		function changeEmoticons(rpList) {
-			parseEmoticons().then(function(emoticons) {
-				if (emoticons == null || emoticons.size === 0)
-					return ;
-				changeEmoticon(rpList, emoticons);
-			})
-			.catch ();
-		}
-		
-		function changeImage(list) {
-			let pos;
-			list.forEach(function (element) {
-				const split = element.querySelector('.repContent').innerHTML.split('<br>');
-				split.forEach(function (content) {
-					while ((pos = content.indexOf('#이미지 ')) != -1) {
-						const src = content.substr(pos + 5).split(/(<br>)|\s/, 1)[0];
-						if (src != null && src.indexOf('http') != -1) {
-							const replaced = content.replace('#이미지 ' + src, `<img src="` + src + `">`);
-							element.querySelector('.repContent').innerHTML
-								= element.querySelector('.repContent').innerHTML.replace(content, replaced);
-							content = replaced;
-						}
-					}
-				});
-			});
-		}
-		
-		function changeLink(list) {
-			let pos;
-			list.forEach(function (element) {
-				const split = element.querySelector('.repContent').innerHTML.split('<br>');
-				split.forEach(function (content) {
-					while ((pos = content.indexOf('#링크 ')) != -1) {
-						const src = content.substr(pos + 4).split(/(<br>)|\s/, 1)[0];
-						if (src != null && src.indexOf('http') != -1) {
-							const replaced = content.replace('#링크 ' + src, `<a href="` + src + `" target="_blank" rel="noopener">` + src + '</a>');
-							element.querySelector('.repContent').innerHTML
-								= element.querySelector('.repContent').innerHTML.replace(content, replaced);
-							content = replaced;
-						}
-					}
-				});
-			});
-		}
-		
-		function changeSecret(list) {
-			list.forEach(function(element) {
-				element.innerHTML = element.innerHTML.replace('비밀댓글입니다', "<span class='rpSecretBox'>secret</span>");
-			});
-		}
-		
-	</script>
-	</head>
-	
-<script defer language='JavaScript' type='text/javascript'>
+	<script src="./images/script.js" language='JavaScript' type='text/javascript'></script>
+	<script language='JavaScript' type='text/javascript'>
 		if (window.location.pathname == '/') {
-		location.href = `[##_blog_link_##]pages/index`;
-	}
-		
-	window.addEventListener('load', function() {
-		const rpList = document.querySelectorAll('.rp_general, .rp_admin, .rp_secret, .guest_admin, .guest_general, .guest_secret');
-		makeArticleMoreLess();
-		makeMemo(rpList);
-		makeCommentMoreLess(rpList);
-		changeImage(rpList);
-		changeLink(rpList);
-		if (window.location.pathname != '/pages/emoticon')
-			changeEmoticons(rpList);
-		changeSecret(rpList);
-	});
-		
-	window.addEventListener('DOMContentLoaded', function () {
-		if (window.location.pathname == '/pages/emoticon')
-			document.querySelector('header').style.display = 'none';
-		else if (window.location.pathname.indexOf('/category') != -1) {
-			showBoardMenu();
+			location.href = `[##_blog_link_##]pages/index`;
 		}
-	});
+		runScript({
+			blogLink: '[##_blog_link_##]',
+			articleEmoticon: '[##_var_articleEmoticon_##]',
+			progressBar: '[##_var_loading_##]',
+		});
 	</script>
+</head>
 
 <body id='[##_body_id_##]'>
+	<s_if_var_loading>
+		<!-- 로딩 화면 영역 -->
+		<div class="loading">
+			<div class="lds-default">
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+		</div>
+		<!-- 로딩 화면 영역 끝 -->
+	</s_if_var_loading>
 	<s_t3>
-		<div id="alignCenter">
-		<header>
-			<ul>
-				<!--
-				** 메뉴 영역 **
-				-->
-			<li><a class='menuItems' href=[##_blog_link_##]pages/index>main</a></li>
-			<li><a class='menuItems' href=[##_blog_link_##]category>board</a></li>
-			<li><a class='menuItems' href="[##_taglog_link_##]">tag</a></li>
-			<li><a class='menuItems' href="[##_guestbook_link_##]">guest</a></li>
-			<li><a class='menuItems' href="[##_blog_link_##]pages/link">link</a></li>
-			<li><a class='menuItems' href="[##_owner_url_##]">admin</a></li>
-			</ul>
-		</header>
+		<div id="top-container">
+			<!-- 메뉴 영역 -->
+			<nav>
+				<ul>
+					<li><a class="menu__button" href=[##_blog_link_##]pages/index>main</a></li>
+					<li><a class="menu__button" href=[##_blog_link_##]category>board</a></li>
+					<li><a class="menu__button" href="[##_taglog_link_##]">tag</a></li>
+					<li><a class="menu__button" href="[##_guestbook_link_##]">guest</a></li>
+					<li><a class="menu__button" href="[##_blog_link_##]pages/link">link</a></li>
+					<li><a class="menu__button" href="[##_owner_url_##]">admin</a></li>
+				</ul>
+			</nav> <!-- 메뉴 영역 끝 -->
 
-		<div id='container'>
-			<div id='content'>
-				<div class='post'>
-					<s_article_protected>
-						<div class="entryProtected">
-							<div class='info'>
-								<a href=[##_article_rep_link_##]>[##_article_rep_date_year_##][##_article_rep_date_month_##][##_article_rep_date_day_##]</a>
-								<a
-								href="[##_article_rep_category_link_##]">
-								<script language='JavaScript'>
-									var Tname = '[##_article_rep_category_##]';
-									if (Tname == '카테고리 없음')
-										;
-									else { document.write(Tname); }
-								</script>
-							</a>
-								<s_tag_label>[##_tag_label_rep_##]</s_tag_label>
-								<s_ad_div>
-									<a href="[##_owner_url_##]/entry/post">new</a><a> </a>
-									<a href="[##_s_ad_m_link_##]">mod</a><a> </a>
-									<a href="#" onclick="[##_s_ad_d_onclick_##]">del</a>
-								</s_ad_div>
-							</div>
-							<p>
-								<input type="password" maxlength="16" id="[##_article_password_##]"
-									name="[##_article_password_##]" value=""
-									onkeydown="if (event.keyCode == 13)[##_article_dissolve_##]"
-									placeholder="password" />
-								<input type="button" class="submit" value="submit" onclick="[##_article_dissolve_##]" />
-							</p>
-						</div>
-					</s_article_protected>
+			<!-- 컨텐츠 영역 -->
+			<main id="content-container">
+				<div id='board-menu'>
+					<a class="menu__button" href="[##_owner_url_##]/entry/post">new</a>
+					<a class="menu__button" href="[##_blog_link_##]pages/emoticon" rel="noopener"
+						onclick="window.open(this.href,'emoticons','width=400, height=600'); return false;">emoticon</a>
 				</div>
 
-				<div class='post'>
-					<div id='boardMenu'>
-						<br><p style="text-align: center;">
-					<a class='boardButton' href="[##_owner_url_##]/entry/post">new</a> <a class='boardButton' href=[##_blog_link_##]pages/emoticon rel="noopener" onclick="window.open(this.href,'emoticons','width=400, height=600'); return false;">emoticon</a></p>
-					</div>
-					<s_article_rep>
-						<div class='info'>
-							<a href=[##_article_rep_link_##]>[##_article_rep_date_year_##][##_article_rep_date_month_##][##_article_rep_date_day_##]</a>
-							<a
-								href="[##_article_rep_category_link_##]">
+				<!-- 공개글 영역 -->
+				<s_article_rep>
+					<!-- 개별 포스트 영역 -->
+					<article>
+						<div class='article__info'>
+							<a href=[##_article_rep_link_##]>
+								[##_article_rep_date_year_##][##_article_rep_date_month_##][##_article_rep_date_day_##]
+							</a>
+							<a href="[##_article_rep_category_link_##]">
 								<script language='JavaScript'>
 									var Tname = '[##_article_rep_category_##]';
 									if (Tname == '카테고리 없음')
@@ -273,104 +85,140 @@
 								<a href="#" onclick="[##_s_ad_d_onclick_##]">del</a>
 							</s_ad_div>
 						</div>
-						<div class="article">[##_article_rep_desc_##]</div>
+						<div class="article__content">[##_article_rep_desc_##]</div>
 
+						<!-- 댓글 영역 -->
 						<s_rp>
+							<!-- 댓글 목록 영역 -->
 							<s_rp_container>
 								<s_rp_rep>
 									<div class="[##_rp_rep_class_##]">
-										<span class="name">[##_rp_rep_name_##]</span>
-										<span class="date"> [##_rp_rep_date_##]</span>
-										<span class="control">
+										<span class="comment__name">[##_rp_rep_name_##]</span>
+										<span class="comment__date"> [##_rp_rep_date_##]</span>
+										<span class="comment__control">
 											<a href="#" onclick="[##_rp_rep_onclick_reply_##]" class="write">re</a>
-											<a href="#" onclick="[##_rp_rep_onclick_delete_##]"
-												class="modify">mod/del</a>
+											<a href="#" onclick="[##_rp_rep_onclick_delete_##]" class="modify">mod/del</a>
 										</span>
 										<div class="repContent">
-										[##_rp_rep_desc_##]
+											[##_rp_rep_desc_##]
 										</div>
-										<p></p>
-										
 									</div>
 									<s_rp2_container>
 										<s_rp2_rep>
 											<ul id='[##_rp_rep_id_##]'>
 												<div class="[##_rp_rep_class_##]">
-													<span class="name"> [##_rp_rep_name_##]</span>
-													<span class="date"> [##_rp_rep_date_##]</span>
-													<span class="control">
-														<a href="#" onclick="[##_rp_rep_onclick_delete_##]"
-															class="modify">
+													<span class="comment__name"> [##_rp_rep_name_##]</span>
+													<span class="comment__date"> [##_rp_rep_date_##]</span>
+													<span class="comment__control">
+														<a href="#" onclick="[##_rp_rep_onclick_delete_##]" class="modify">
 															mod/del</a>
 													</span>
-													<div class="repContent rerep">
-													[##_rp_rep_desc_##]
-														</div>
-													<p></p>
+													<div class="repContent">
+														[##_rp_rep_desc_##]
+													</div>
 												</div>
 											</ul>
 										</s_rp2_rep>
 									</s_rp2_container>
 								</s_rp_rep>
-							</s_rp_container>
+							</s_rp_container> <!-- 댓글 목록 영역 끝 -->
 
-								<span class="commentButton" onclick="layer_toggle(this.parentNode.querySelector('.comments'));">comment</span>
-							<div class="comments" style="display: none;">
+							<!-- 댓글 입력 영역 -->
+							<button class="comment__button comment__button"
+								onclick="layer_toggle(this.parentNode.querySelector('.commentWrite'));">comment</button>
+							<div class="commentWrite" style="display: none;">
 								<s_rp_input_form>
-									<div class="commentWrite">
-										<s_rp_member>
-											<s_rp_guest>
-												<input type="text" name="[##_rp_input_name_##]"
-													value="[##_guest_name_##]" placeholder="name" />
-												<input type="password" maxlength="8" name="[##_rp_input_password_##]"
-													value="[##_rp_admin_check_##]" placeholder="password" />
-												<input type="text" class="homepage" name="[##_rp_input_homepage_##]"
-													value="[##_guest_homepage_##]" placeholder="homepage" />
-
-											</s_rp_guest>
-										</s_rp_member>
-										<label for="secret">secret </label><input type="checkbox" class="secret" name="secret" value="1"
-											name="[##_rp_input_is_secret_##]" class="checkbox" />
-										
-										<input type="submit" value="submit" onclick="[##_rp_onclick_submit_##]" />
-										<textarea name="[##_rp_input_comment_##]" rows="5" cols="70"></textarea>
-									</div>
+									<s_rp_member>
+										<s_rp_guest>
+											<input class="comment__input" type="text" name="[##_rp_input_name_##]" value="[##_guest_name_##]"
+												placeholder="name" />
+											<input class="comment__input" type="password" maxlength="8" name="[##_rp_input_password_##]"
+												value="[##_rp_admin_check_##]" placeholder="password" />
+											<input class="comment__input" type="text" class="homepage" name="[##_rp_input_homepage_##]"
+												value="[##_guest_homepage_##]" placeholder="homepage" />
+										</s_rp_guest>
+									</s_rp_member>
+									<label for="secret">secret </label>
+									<input type="checkbox" class="secret" name="secret" value="1" name="[##_rp_input_is_secret_##]"
+										class="checkbox" />
+									<input class="comment__button" type="submit" value="submit" onclick="[##_rp_onclick_submit_##]" />
+									<textarea name="[##_rp_input_comment_##]" rows="5" cols="70"></textarea>
 								</s_rp_input_form>
+							</div> <!-- 댓글 입력 영역 끝 -->
+						</s_rp> <!-- 댓글 영역 끝 -->
+					</article> <!-- 개별 포스트 영역 끝 -->
+				</s_article_rep> <!-- 공개글 영역 끝 -->
 
-							</div>
-						</s_rp>
-					</s_article_rep>
-				</div>
-
-
-				<s_guest>
-					<s_guest_input_form>
-						<div class="guestWrite">
-							<s_guest_member>
-								<s_guest_form>
-										<input type="text" name="[##_guest_input_name_##]" value="[##_guest_name_##]"
-											placeholder="name" />
-										<input type="password" maxlength="8" name="[##_guest_input_password_##]"
-											value="[##_guest_password_##]" placeholder="password" />
-										<input type="text" name="[##_guest_input_homepage_##]"
-											value="[##_guest_homepage_##]" placeholder="homepage" />
-										<label for="secret">secret </label><input type="checkbox" id="secret" name="secret" class="checkbox" value="1"
-											name="[##_guest_input_is_secret_##]" class="checkbox" />
-								</s_guest_form>
-							</s_guest_member>
-							<input type="submit" value="submit" onclick="[##_guest_onclick_submit_##]" />
-							<textarea name="[##_guest_textarea_body_##]" cols="50" rows="5"></textarea>
-							
+				<!-- 보호글 영역 -->
+				<s_article_protected>
+					<article>
+						<div class='article__info'>
+							<a
+								href=[##_article_rep_link_##]>[##_article_rep_date_year_##][##_article_rep_date_month_##][##_article_rep_date_day_##]</a>
+							<a href="[##_article_rep_category_link_##]">
+								<script language='JavaScript'>
+									var Tname = '[##_article_rep_category_##]';
+									if (Tname == '카테고리 없음')
+										;
+									else { document.write(Tname); }
+								</script>
+							</a>
+							<s_tag_label>[##_tag_label_rep_##]</s_tag_label>
+							<s_ad_div>
+								<a href="[##_s_ad_m_link_##]">mod</a><a> </a>
+								<a href="#" onclick="[##_s_ad_d_onclick_##]">del</a>
+							</s_ad_div>
 						</div>
-					</s_guest_input_form>
-					<s_guest_container>
-						<div class="guestList">
+						<div class="article__content">
+							<p class="article__protected">
+								<input class="article__protected__input" type="password" maxlength="16" id="[##_article_password_##]"
+									name="[##_article_password_##]" value="" onkeydown="if (event.keyCode == 13)[##_article_dissolve_##]"
+									placeholder="password" />
+								<input class="comment__button article__protected__button" type="button" class="submit" value="submit"
+									onclick="[##_article_dissolve_##]" />
+							</p>
+						</div>
+					</article>
+				</s_article_protected> <!-- 보호글 영역 끝 -->
+
+				<!-- 태그로그 영역 -->
+				<s_tag>
+					<div id="taglog">
+						<s_tag_rep>
+							<a href="[##_tag_link_##]" class="[##_tag_class_##] taglog__items">[##_tag_name_##]</a>
+						</s_tag_rep>
+					</div>
+				</s_tag> <!-- 태그로그 영역 끝 -->
+
+				<!-- 방명록 영역 -->
+				<div id="guest__list">
+					<s_guest>
+						<!-- 방명록 입력 영역 -->
+						<s_guest_input_form>
+							<div class="guest__write">
+								<s_guest_member>
+									<s_guest_form>
+										<input class="comment__input" type="text" name="[##_guest_input_name_##]" value="[##_guest_name_##]"
+											placeholder="name" />
+										<input class="comment__input" type="password" maxlength="8" name="[##_guest_input_password_##]"
+											value="[##_guest_password_##]" placeholder="password" />
+										<input class="comment__input" type="text" name="[##_guest_input_homepage_##]"
+											value="[##_guest_homepage_##]" placeholder="homepage" />
+										<label for="secret">secret </label><input type="checkbox" id="secret" name="secret" class="checkbox"
+											value="1" name="[##_guest_input_is_secret_##]" class="checkbox" />
+									</s_guest_form>
+								</s_guest_member>
+								<input class="comment__button" type="submit" value="submit" onclick="[##_guest_onclick_submit_##]" />
+								<textarea name="[##_guest_textarea_body_##]" cols="50" rows="5"></textarea>
+							</div>
+						</s_guest_input_form> <!-- 방명록 입력 영역 끝 -->
+						<s_guest_container>
 							<s_guest_rep>
-								<ul id='[##_guest_rep_id_##]'>
+								<div id='[##_guest_rep_id_##]'>
 									<div class="[##_guest_rep_class_##]">
-										<span class="name">[##_guest_rep_name_##]</span>
-										<span class="date"> [##_guest_rep_date_##]</span>
-										<span class="control">
+										<span class="comment__name">[##_guest_rep_name_##]</span>
+										<span class="comment__date"> [##_guest_rep_date_##]</span>
+										<span class="comment__control">
 											<a href="#" onclick="[##_guest_rep_onclick_reply_##]">
 												re
 											</a>
@@ -381,55 +229,44 @@
 										<div class="repContent">
 											[##_guest_rep_desc_##]
 										</div>
-										<p></p>
 									</div>
 									<s_guest_reply_container>
 										<s_guest_reply_rep>
 											<ul id='[##_guest_rep_id_##]'>
 												<div class="[##_guest_rep_class_##]">
-													<span class="name"> [##_guest_rep_name_##]</span>
-													<span class="date"> [##_guest_rep_date_##]</span>
-													<span class="control">
-														<a href="#"
-															onclick="[##_guest_rep_onclick_delete_##]">mod/del</a>
+													<span class="comment__name"> [##_guest_rep_name_##]</span>
+													<span class="comment__date"> [##_guest_rep_date_##]</span>
+													<span class="comment__control">
+														<a href="#" onclick="[##_guest_rep_onclick_delete_##]">mod/del</a>
 													</span>
 													<div class="repContent rerep">
-													[##_guest_rep_desc_##]
-														</div>
-													<p></p>
+														[##_guest_rep_desc_##]
+													</div>
 												</div>
 											</ul>
 										</s_guest_reply_rep>
 									</s_guest_reply_container>
-								</ul>
+								</div>
 							</s_guest_rep>
-						</div>
-					</s_guest_container>
-				</s_guest>
-				
+						</s_guest_container>
+					</s_guest>
+				</div><!-- 방명록 영역 끝 -->
+
+				<!-- 페이징 영역 -->
 				<s_paging>
 					<div class="paging">
 						<a [##_prev_page_##] class="[##_no_more_prev_##]">&lt;</a>
-							<span class="numbox">
+						<span>
 							<s_paging_rep>
 								<a [##_paging_rep_link_##] class="num">[##_paging_rep_link_num_##]</a>
 							</s_paging_rep>
 						</span>
 						<a [##_next_page_##] class="[##_no_more_next_##]">&gt;</a>
 					</div>
-				</s_paging>
-				
-				<s_tag>
-					<div class="taglog">
-						<s_tag_rep>
-							<a href="[##_tag_link_##]" class="[##_tag_class_##] tagItems">[##_tag_name_##]</a>
-						</s_tag_rep>
-					</div>
-				</s_tag>
+				</s_paging> <!-- 페이징 영역 끝 -->
 
-			</div>
-			<div id="footer">designed by. <a href="https://tslb-sample.tistory.com/">factory-machine</a></div>
-		</div>
+				<footer>designed by. <a href="https://tslb-sample.tistory.com/">factory-machine</a></footer>
+			</main> <!-- 컨텐츠 영역 끝 -->
 		</div>
 	</s_t3>
 </body>
