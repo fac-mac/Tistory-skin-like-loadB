@@ -89,9 +89,10 @@ function changeEmoticon(rpList, emoticons) {
   emoticons.forEach(function (obj) {
     rpList.forEach(function (rp) {
       const content = rp.querySelector('.repContent').innerHTML;
-      if (content.indexOf(obj.cmd) != -1)
+      if (content.indexOf(obj.cmd) != -1) {
         rp.querySelector('.repContent').innerHTML
           = content.replace(RegExp(obj.cmd, 'gm'), `<img src="` + obj.src + `">`);
+      }
     });
   });
 }
@@ -100,10 +101,14 @@ function changeArticleEmoticon(emoticons) {
   const articles = document.querySelectorAll('article');
   emoticons.forEach(function (obj) {
     articles.forEach(function (article) {
-      const content = article.querySelector('.article__content').innerHTML;
-      if (content.indexOf(obj.cmd) != -1)
+      const CLASS_NAME = "container_postbtn";
+      const content = article.querySelector('.article__content').innerHTML.split(CLASS_NAME);
+      const pureContent = content[0];
+      if (pureContent.indexOf(obj.cmd) != -1) {
         article.querySelector('.article__content').innerHTML
-          = content.replace(RegExp(obj.cmd, 'gm'), `<img src="` + obj.src + `">`);
+          = pureContent.replace(RegExp(obj.cmd, 'gm'), `<img src="` + obj.src + `">`)
+          + CLASS_NAME + content[1];
+      }
     });
   });
 }
