@@ -16,6 +16,7 @@
 			blogLink: '[##_blog_link_##]',
 			articleEmoticon: '[##_var_articleEmoticon_##]',
 			progressBar: '[##_var_loading_##]',
+			retryCount: '[##_var_retryCount_##]',
 		});
 	</script>
 </head>
@@ -131,11 +132,11 @@
 									<s_rp_member>
 										<s_rp_guest>
 											<input class="comment__input" type="text" name="[##_rp_input_name_##]" value="[##_guest_name_##]"
-												placeholder="name" />
+												placeholder="name" autocomplete="true" />
 											<input class="comment__input" type="password" maxlength="8" name="[##_rp_input_password_##]"
-												value="[##_rp_admin_check_##]" placeholder="password" />
+												value="[##_rp_admin_check_##]" placeholder="password" autocomplete="true" />
 											<input class="comment__input" type="text" class="homepage" name="[##_rp_input_homepage_##]"
-												value="[##_guest_homepage_##]" placeholder="homepage" />
+												value="[##_guest_homepage_##]" placeholder="homepage" autocomplete="true" />
 										</s_rp_guest>
 									</s_rp_member>
 									<label for="secret">secret </label>
@@ -185,7 +186,7 @@
 							<p class="article__protected">
 								<input class="article__protected__input" type="password" maxlength="16" id="[##_article_password_##]"
 									name="[##_article_password_##]" value="" onkeydown="if (event.keyCode == 13)[##_article_dissolve_##]"
-									placeholder="password" />
+									placeholder="password" autocomplete="true" />
 								<input class="comment__button article__protected__button" type="button" class="submit" value="submit"
 									onclick="[##_article_dissolve_##]" />
 							</p>
@@ -211,11 +212,11 @@
 								<s_guest_member>
 									<s_guest_form>
 										<input class="comment__input" type="text" name="[##_guest_input_name_##]" value="[##_guest_name_##]"
-											placeholder="name" />
+											placeholder="name" autocomplete="true" />
 										<input class="comment__input" type="password" maxlength="8" name="[##_guest_input_password_##]"
-											value="[##_guest_password_##]" placeholder="password" />
+											value="[##_guest_password_##]" placeholder="password" autocomplete="true" />
 										<input class="comment__input" type="text" name="[##_guest_input_homepage_##]"
-											value="[##_guest_homepage_##]" placeholder="homepage" />
+											value="[##_guest_homepage_##]" placeholder="homepage" autocomplete="true" />
 										<label for="secret">secret </label><input type="checkbox" id="secret" name="secret" class="checkbox"
 											value="1" name="[##_guest_input_is_secret_##]" class="checkbox" />
 									</s_guest_form>

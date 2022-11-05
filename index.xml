@@ -72,6 +72,17 @@
         <![CDATA[ 주의! 본문에 일치하는 이모티콘이 있는지 일일이 확인하기 때문에 성능이 대폭 떨어집니다. ]]>
       </description>
       </variable>
+      <variable>
+        <name>retryCount</name>
+        <label><![CDATA[ 변환 시도 횟수 ]]></label>
+        <type>STRING</type>
+        <option />
+        <default>3</default>
+        <description>
+        <![CDATA[ 변환 스크립트를 설정된 횟수만큼 시도합니다. ]]>
+        <![CDATA[ 1회 당 최소 100ms 소모됩니다. ]]>
+      </description>
+      </variable>
     </variablegroup>
   </variables>
 </skin>
