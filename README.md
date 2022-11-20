@@ -1,4 +1,4 @@
-# ✨Tistory-skin-like-loadB (v1.3)  
+# ✨Tistory-skin-like-loadB
 ## 소개  
 ![](https://github.com/fac-mac/Tistory-skin-like-loadB/blob/main/preview.png?raw=true)
 - 티스토리로 로드비 갠홈인 척 해보는 반응형 스킨입니다.
