@@ -89,7 +89,7 @@ function changeEmoticon(rpList, emoticons) {
       if (content.indexOf(obj.cmd) != -1) {
         rp.querySelector(".repContent").innerHTML = content.replace(
           RegExp(obj.cmd, "gm"),
-          `<img src="` + obj.src + `">`
+          `<img class="emoticon" src="` + obj.src + `">`
         );
       }
     });
