@@ -1,6 +1,26 @@
-function layer_toggle(obj) {
-  if (obj.style.display == "none") obj.style.display = "block";
-  else if (obj.style.display == "block") obj.style.display = "none";
+const CLASS_NAME_HIDDEN = 'hidden';
+
+/**
+ * @param {HTMLElement} obj 
+ * @param {undefined | 'show' | 'hide'} overrideOption
+ */
+function layer_toggle(obj, overrideOption) {
+  function show() {
+    obj.classList.remove(CLASS_NAME_HIDDEN);
+  }
+  function hide() {
+    obj.classList.add(CLASS_NAME_HIDDEN);
+  }
+
+  let targetFunction;
+
+  if (overrideOption) {
+    targetFunction = overrideOption === 'show' ? show : hide;
+  } else {
+    const isElementHidden = obj.classList.contains(CLASS_NAME_HIDDEN);
+    targetFunction = isElementHidden ? show : hide;
+  }
+  targetFunction();
 }
 
 function makeArticleMoreLess() {
@@ -27,7 +47,7 @@ function changeCommentLine(line, item) {
   if (item.innerHTML.indexOf(line + "<br>") == -1)
     item.innerHTML = item.innerHTML.replace(line, "");
   else item.innerHTML = item.innerHTML.replace(line + "<br>", "");
-  item.querySelector(".repContent").style = "display: none;";
+  layer_toggle(item.querySelector(".repContent"), 'hide');
 }
 
 function makeCommentMoreLess(list) {
@@ -63,7 +83,7 @@ function makeMemo(list) {
 }
 
 function showBoardMenu() {
-  document.querySelector("#board-menu").style.display = "flex";
+  layer_toggle(document.querySelector("#board-menu"), 'show');
 }
 
 async function getEmoticonList(blogLink) {
@@ -223,13 +243,14 @@ function runScript({ blogLink, articleEmoticon, progressBar, retryCount }) {
     }
     if (progressBar) {
       const loading = document.querySelector(".loading");
-      loading.classList.add("hidden");
+      loading.classList.add("disappear");
     }
   });
 
   window.addEventListener("DOMContentLoaded", function () {
-    if (window.location.pathname == "/pages/emoticon")
-      document.querySelector("nav").style.display = "none";
+    if (window.location.pathname == "/pages/emoticon") {
+      layer_toggle(document.querySelector("nav"), 'hide');
+    }
     else if (window.location.pathname.indexOf("/category") != -1) {
       showBoardMenu();
     }

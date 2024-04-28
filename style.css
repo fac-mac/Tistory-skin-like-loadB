@@ -462,7 +462,7 @@ body::-webkit-scrollbar-track {
   background: var(--background);
 }
 
-.hidden {
+.disappear {
   opacity: 0;
   z-index: -9999;
   -webkit-animation: disappear 0.5s;
