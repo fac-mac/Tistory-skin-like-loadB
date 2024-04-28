@@ -29,6 +29,10 @@
   데스크탑 뷰의 스타일링은 최하단의 @media {} 내부를 참고해주세요.
 */
 
+.hidden {
+  display: none !important;
+}
+
 a,
 a:link,
 a:visited,
@@ -91,8 +95,8 @@ nav ul {
 .menu__button {
   display: block;
   text-align: center;
-  min-width: 5em;
-  padding: 0.2em 0 0.4em 0;
+  min-width: 5rem;
+  padding: 0.2rem 0;
   background-color: var(--menu-background);
 }
 
@@ -108,15 +112,46 @@ nav li:last-child a {
 }
 
 #board-menu {
-  display: none;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-#board-menu a {
+#board-menu > div {
+  display: flex;
+}
+
+#board-menu a,
+#board-menu button,
+#search-menu input[type="button"] {
+  border: none;
   border-radius: 0.5rem;
   min-width: 0;
-  padding: 0.2em 0.5em 0.4em 0.5em;
+  padding: 0.2rem 0.5rem;
   margin: 0 0.25rem;
+}
+
+#board-menu button,
+#search-menu input[type="button"] {
+  cursor: pointer;
+  color: var(--text);
+  word-break: break-all;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+#search-menu > div {
+  margin-top: 1rem;
+  display: flex;
+}
+
+#search-menu input[type="text"] {
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--white-background);
+  color: var(--inner-textarea);
+  padding: 0 0.5rem;
+  font-size: inherit;
 }
 
 /*
